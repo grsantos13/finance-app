@@ -4,6 +4,9 @@ import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
 
+import api from "./service/api";
+
+Vue.prototype.$http = api;
 Vue.config.productionTip = false;
 
 new Vue({

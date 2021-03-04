@@ -17,69 +17,15 @@
     </v-app-bar>
 
     <v-navigation-drawer app clipped permanent bottom>
-      <v-card elevation="0" class="gradient" style="border-radius: 0">
-        <v-card-text>
-          <p class="user text-white">Gustavo</p>
-          <p class="user text-white">00000000000</p>
-          <p class="user text-white">teste@email.com</p>
-        </v-card-text>
-      </v-card>
-      <v-divider></v-divider>
       <v-list nav dense>
         <v-list-item to="/">
           <v-list-item-icon><v-icon>mdi-home</v-icon></v-list-item-icon>
           <v-list-item-title>Home</v-list-item-title>
         </v-list-item>
-        <v-list-group no-action>
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Usuário</v-list-item-title>
-          </template>
-          <v-list-item to="/users">
-            <v-list-item-icon
-              ><v-icon>mdi-account-box</v-icon></v-list-item-icon
-            >
-            <v-list-item-title>Usuário</v-list-item-title>
-          </v-list-item>
-          <v-list-item to="/employees">
-            <v-list-item-icon
-              ><v-icon>mdi-account-box</v-icon></v-list-item-icon
-            >
-            <v-list-item-title>Funcionário</v-list-item-title>
-          </v-list-item>
-        </v-list-group>
-        <v-list-item to="/customers">
-          <v-list-item-icon
-            ><v-icon>mdi-badge-account</v-icon></v-list-item-icon
-          >
-          <v-list-item-title>Cliente</v-list-item-title>
+        <v-list-item to="/entradas">
+          <v-list-item-icon><v-icon>mdi-cash</v-icon></v-list-item-icon>
+          <v-list-item-title>Entradas</v-list-item-title>
         </v-list-item>
-        <v-list-item to="/suppliers">
-          <v-list-item-icon><v-icon>mdi-account-tie</v-icon></v-list-item-icon>
-          <v-list-item-title>Fornecedor</v-list-item-title>
-        </v-list-item>
-        <v-list-group no-action>
-          <template v-slot:activator>
-            <v-list-item-icon>
-              <v-icon>mdi-view-list</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>Produto</v-list-item-title>
-          </template>
-          <v-list-item to="/products">
-            <v-list-item-icon
-              ><v-icon>mdi-view-list-outline</v-icon></v-list-item-icon
-            >
-            <v-list-item-title>Produtos</v-list-item-title>
-          </v-list-item>
-          <v-list-item to="/categories">
-            <v-list-item-icon
-              ><v-icon>mdi-view-list-outline</v-icon></v-list-item-icon
-            >
-            <v-list-item-title>Categoria</v-list-item-title>
-          </v-list-item>
-        </v-list-group>
       </v-list>
       <v-app-bar color="transparent" bottom absolute>
         <v-list nav dense>
