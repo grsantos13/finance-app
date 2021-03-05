@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar color="primary" app clipped-left clipped-right dark>
-      <v-toolbar-title>STUDIO CAROL</v-toolbar-title>
+      <v-toolbar-title>FINANÇAS</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn @click="drawer = !drawer" title="Notificações" icon>
         <v-badge
@@ -25,6 +25,10 @@
         <v-list-item to="/entradas">
           <v-list-item-icon><v-icon>mdi-cash</v-icon></v-list-item-icon>
           <v-list-item-title>Entradas</v-list-item-title>
+        </v-list-item>
+        <v-list-item to="/despesas">
+          <v-list-item-icon><v-icon>mdi-cash</v-icon></v-list-item-icon>
+          <v-list-item-title>Despesas</v-list-item-title>
         </v-list-item>
       </v-list>
       <v-app-bar color="transparent" bottom absolute>
