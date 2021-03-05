@@ -1,0 +1,95 @@
+<template>
+  <div class="mr-5">
+    <v-card
+      outlined
+      elevation="2"
+      class="mx-auto"
+      height="83vh"
+      width="500px"
+      tile
+    >
+      <toolbar-card
+        color="primary"
+        dark
+        label="Categorias"
+        :searchInput="true"
+        @filter="filter"
+      />
+      <v-card-text>
+        <v-row>
+          <v-col cols="12" class="mx-auto">
+            <v-data-table
+              dense
+              :headers="headers"
+              :items="categorias"
+              :page.sync="page"
+              :items-per-page="itemsPerPage"
+              hide-default-footer
+              @page-count="pageCount = $event"
+            >
+              <template v-slot:item.actions="{ item }">
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      :disabled="item.status == 'REALIZADO'"
+                      @click="filter(item)"
+                      v-bind="attrs"
+                      v-on="on"
+                      icon
+                      color="green"
+                    >
+                      <v-icon small>
+                        mdi-check
+                      </v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Ativar / Desativar</span>
+                </v-tooltip>
+              </template>
+            </v-data-table>
+            <div class="text-center pt-2">
+              <v-pagination v-model="page" :length="pageCount" />
+            </div>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+  </div>
+</template>
+<script>
+import ToolbarCard from "../components/ToolbarCard.vue";
+import DateUtils from "../utils/dateUtils";
+import TranslationUtils from "../utils/translationUtils";
+
+export default {
+  name: "Categorias",
+  components: {
+    ToolbarCard
+  },
+  data: () => ({
+    date: new DateUtils(),
+    translation: new TranslationUtils(),
+    headers: [
+      { text: "Categoria", value: "nome", align: "center" },
+      { text: "Ações", value: "actions", sortable: false, align: "center" }
+    ],
+    categorias: [],
+    page: 1,
+    pageCount: 0,
+    itemsPerPage: 10
+  }),
+  mounted: function() {
+    this.refresh();
+  },
+  methods: {
+    refresh: function() {
+      this.$http.get("/categorias").then(response => {
+        this.categorias = response.data;
+      });
+    },
+    filter: function(query) {
+      alert(query);
+    }
+  }
+};
+</script>

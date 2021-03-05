@@ -30,6 +30,10 @@
           <v-list-item-icon><v-icon>mdi-cash</v-icon></v-list-item-icon>
           <v-list-item-title>Despesas</v-list-item-title>
         </v-list-item>
+        <v-list-item to="/categorias">
+          <v-list-item-icon><v-icon>mdi-view-list</v-icon></v-list-item-icon>
+          <v-list-item-title>Categorias</v-list-item-title>
+        </v-list-item>
       </v-list>
       <v-app-bar color="transparent" bottom absolute>
         <v-list nav dense>
