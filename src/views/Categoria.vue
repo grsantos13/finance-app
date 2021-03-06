@@ -87,19 +87,25 @@ export default {
   },
   methods: {
     refresh: function() {
-      this.$http.get("/categorias").then(response => {
-        this.categorias = response.data.map(categoria => {
-          categoria.umaPorMes = this.translation.translate(categoria.umaPorMes, 'bool');
-          return categoria;
+      this.$http
+        .get("/categorias")
+        .then(response => {
+          this.categorias = response.data.map(categoria => {
+            categoria.umaPorMes = this.translation.translate(
+              categoria.umaPorMes,
+              "bool"
+            );
+            return categoria;
+          });
+        })
+        .then(() => {
+          this.showCategorias = this.categorias;
         });
-      }).then(() => {
-        this.showCategorias = this.categorias;
-      });
     },
     filter: function(query) {
       this.showCategorias = this.categorias.filter(categoria => {
         return categoria.nome.toLowerCase().includes(query.toLowerCase());
-      })
+      });
     }
   }
 };

@@ -4,7 +4,7 @@
       <toolbar-card
         color="primary"
         dark
-        label="Saídas"
+        label="Despesas"
         :searchInput="true"
         @filter="filter"
       />
@@ -78,7 +78,7 @@ export default {
   methods: {
     refresh: function() {
       this.$http.get("/despesas?orderBy=realizadaEm,DESC").then(response => {
-        if (!response.data.empty){
+        if (!response.data.empty) {
           this.saidas = response.data.content.map(despesa => {
             despesa.fixa = this.translation.translate(despesa.fixa, "bool");
             if (despesa.conta != undefined) {
@@ -92,7 +92,9 @@ export default {
               "bool"
             );
 
-            despesa.valor = this.$curr.format(despesa.valor, { locale: "pt-BR" });
+            despesa.valor = this.$curr.format(despesa.valor, {
+              locale: "pt-BR"
+            });
 
             var filtroStatusRealizado = despesa.transacoes.filter(transacao => {
               return transacao.status != "REALIZADO";

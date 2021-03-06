@@ -19,27 +19,41 @@
     <v-navigation-drawer app clipped permanent bottom>
       <v-list nav dense>
         <v-list-item to="/">
-          <v-list-item-icon><v-icon color="secondary">mdi-home</v-icon></v-list-item-icon>
+          <v-list-item-icon
+            ><v-icon color="secondary">mdi-home</v-icon></v-list-item-icon
+          >
           <v-list-item-title>Home</v-list-item-title>
         </v-list-item>
         <v-list-item to="/entradas">
-          <v-list-item-icon><v-icon color="success">mdi-cash-plus</v-icon></v-list-item-icon>
+          <v-list-item-icon
+            ><v-icon color="success">mdi-cash-plus</v-icon></v-list-item-icon
+          >
           <v-list-item-title>Entradas</v-list-item-title>
         </v-list-item>
         <v-list-item to="/despesas">
-          <v-list-item-icon><v-icon color="error">mdi-cash-minus</v-icon></v-list-item-icon>
+          <v-list-item-icon
+            ><v-icon color="error">mdi-cash-minus</v-icon></v-list-item-icon
+          >
           <v-list-item-title>Despesas</v-list-item-title>
         </v-list-item>
         <v-list-item to="/categorias">
-          <v-list-item-icon><v-icon color="secondary">mdi-shape</v-icon></v-list-item-icon>
+          <v-list-item-icon
+            ><v-icon color="secondary">mdi-shape</v-icon></v-list-item-icon
+          >
           <v-list-item-title>Categorias</v-list-item-title>
         </v-list-item>
         <v-list-item to="/contas">
-          <v-list-item-icon><v-icon color="secondary">mdi-view-list</v-icon></v-list-item-icon>
+          <v-list-item-icon
+            ><v-icon color="secondary">mdi-view-list</v-icon></v-list-item-icon
+          >
           <v-list-item-title>Contas</v-list-item-title>
         </v-list-item>
         <v-list-item to="/cartoes">
-          <v-list-item-icon><v-icon color="secondary">mdi-credit-card-multiple-outline</v-icon></v-list-item-icon>
+          <v-list-item-icon
+            ><v-icon color="secondary"
+              >mdi-credit-card-multiple-outline</v-icon
+            ></v-list-item-icon
+          >
           <v-list-item-title>Cartões</v-list-item-title>
         </v-list-item>
       </v-list>

@@ -79,19 +79,22 @@ export default {
   },
   methods: {
     refresh: function() {
-      this.$http.get("/contas").then(response => {
-        this.contas = response.data.map(conta => {
-            conta.nome = conta.nome.replace('_',' ');
+      this.$http
+        .get("/contas")
+        .then(response => {
+          this.contas = response.data.map(conta => {
+            conta.nome = conta.nome.replace("_", " ");
             return conta;
-        });
-      }).then(() => {
+          });
+        })
+        .then(() => {
           this.showContas = this.contas;
-      })
+        });
     },
     filter: function(query) {
       this.showContas = this.contas.filter(conta => {
         return conta.nome.toLowerCase().includes(query.toLowerCase());
-      })
+      });
     }
   }
 };
