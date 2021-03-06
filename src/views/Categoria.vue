@@ -21,7 +21,7 @@
             <v-data-table
               dense
               :headers="headers"
-              :items="categorias"
+              :items="showCategorias"
               :page.sync="page"
               :items-per-page="itemsPerPage"
               hide-default-footer
@@ -63,6 +63,7 @@ import TranslationUtils from "../utils/translationUtils";
 
 export default {
   name: "Categorias",
+  translation: new TranslationUtils(),
   components: {
     ToolbarCard
   },
@@ -71,12 +72,15 @@ export default {
     translation: new TranslationUtils(),
     headers: [
       { text: "Categoria", value: "nome", align: "center" },
+      { text: "1x por mês", value: "umaPorMes", align: "center" },
+      { text: "Movimento", value: "movimento", align: "center" },
       { text: "Ações", value: "actions", sortable: false, align: "center" }
     ],
     categorias: [],
+    showCategorias: [],
     page: 1,
     pageCount: 0,
-    itemsPerPage: 10
+    itemsPerPage: 8
   }),
   mounted: function() {
     this.refresh();
@@ -84,11 +88,18 @@ export default {
   methods: {
     refresh: function() {
       this.$http.get("/categorias").then(response => {
-        this.categorias = response.data;
+        this.categorias = response.data.map(categoria => {
+          categoria.umaPorMes = this.translation.translate(categoria.umaPorMes, 'bool');
+          return categoria;
+        });
+      }).then(() => {
+        this.showCategorias = this.categorias;
       });
     },
     filter: function(query) {
-      alert(query);
+      this.showCategorias = this.categorias.filter(categoria => {
+        return categoria.nome.toLowerCase().includes(query.toLowerCase());
+      })
     }
   }
 };

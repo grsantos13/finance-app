@@ -79,17 +79,19 @@ export default {
   methods: {
     refresh: function() {
       this.$http.get("/entradas?orderBy=realizadaEm,DESC").then(response => {
-        this.entradas = response.data.content.map(entrada => {
-          entrada.fixa = this.translation.translate(entrada.fixa, "bool");
-          entrada.conta.nome = entrada.conta.nome.replace("_", " ");
-          entrada.realizadaEm = this.date.convertDate(entrada.realizadaEm);
-          entrada.valorVariavel = this.translation.translate(
-            entrada.valorVariavel,
-            "bool"
-          );
-          entrada.valor = this.$curr.format(entrada.valor, { locale: "pt-BR" });
-          return entrada;
-        });
+        if (!response.data.empty){
+          this.entradas = response.data.content.map(entrada => {
+            entrada.fixa = this.translation.translate(entrada.fixa, "bool");
+            entrada.conta.nome = entrada.conta.nome.replace("_", " ");
+            entrada.realizadaEm = this.date.convertDate(entrada.realizadaEm);
+            entrada.valorVariavel = this.translation.translate(
+              entrada.valorVariavel,
+              "bool"
+            );
+            entrada.valor = this.$curr.format(entrada.valor, { locale: "pt-BR" });
+            return entrada;
+          });
+        }
       });
     },
     filter: function(query) {

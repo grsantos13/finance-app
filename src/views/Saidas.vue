@@ -78,38 +78,40 @@ export default {
   methods: {
     refresh: function() {
       this.$http.get("/despesas?orderBy=realizadaEm,DESC").then(response => {
-        this.saidas = response.data.content.map(despesa => {
-          despesa.fixa = this.translation.translate(despesa.fixa, "bool");
-          if (despesa.conta != undefined) {
-            despesa.conta.nome = despesa.conta.nome.replace("_", " ");
-          } else {
-            despesa.conta = { nome: "N/A" };
-          }
-          despesa.realizadaEm = this.date.convertDate(despesa.realizadaEm);
-          despesa.valorVariavel = this.translation.translate(
-            despesa.valorVariavel,
-            "bool"
-          );
+        if (!response.data.empty){
+          this.saidas = response.data.content.map(despesa => {
+            despesa.fixa = this.translation.translate(despesa.fixa, "bool");
+            if (despesa.conta != undefined) {
+              despesa.conta.nome = despesa.conta.nome.replace("_", " ");
+            } else {
+              despesa.conta = { nome: "N/A" };
+            }
+            despesa.realizadaEm = this.date.convertDate(despesa.realizadaEm);
+            despesa.valorVariavel = this.translation.translate(
+              despesa.valorVariavel,
+              "bool"
+            );
 
-          despesa.valor = this.$curr.format(despesa.valor, { locale: "pt-BR" });
+            despesa.valor = this.$curr.format(despesa.valor, { locale: "pt-BR" });
 
-          var filtroStatusRealizado = despesa.transacoes.filter(transacao => {
-            return transacao.status != "REALIZADO";
+            var filtroStatusRealizado = despesa.transacoes.filter(transacao => {
+              return transacao.status != "REALIZADO";
+            });
+
+            var filtroStatusPendente = despesa.transacoes.filter(transacao => {
+              return transacao.status == "PENDENTE";
+            });
+
+            if (filtroStatusRealizado.length > 0) {
+              if (filtroStatusPendente.length > 0) despesa.status = "PENDENTE";
+              else despesa.status = "PLANEJADO";
+            } else {
+              despesa.status = "REALIZADO";
+            }
+
+            return despesa;
           });
-
-          var filtroStatusPendente = despesa.transacoes.filter(transacao => {
-            return transacao.status == "PENDENTE";
-          });
-
-          if (filtroStatusRealizado.length > 0) {
-            if (filtroStatusPendente.length > 0) despesa.status = "PENDENTE";
-            else despesa.status = "PLANEJADO";
-          } else {
-            despesa.status = "REALIZADO";
-          }
-
-          return despesa;
-        });
+        }
       });
     },
     filter: function(query) {

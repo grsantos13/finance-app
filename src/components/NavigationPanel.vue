@@ -23,11 +23,11 @@
           <v-list-item-title>Home</v-list-item-title>
         </v-list-item>
         <v-list-item to="/entradas">
-          <v-list-item-icon><v-icon>mdi-cash</v-icon></v-list-item-icon>
+          <v-list-item-icon><v-icon>mdi-cash-plus</v-icon></v-list-item-icon>
           <v-list-item-title>Entradas</v-list-item-title>
         </v-list-item>
         <v-list-item to="/despesas">
-          <v-list-item-icon><v-icon>mdi-cash</v-icon></v-list-item-icon>
+          <v-list-item-icon><v-icon>mdi-cash-minus</v-icon></v-list-item-icon>
           <v-list-item-title>Despesas</v-list-item-title>
         </v-list-item>
         <v-list-item to="/categorias">
