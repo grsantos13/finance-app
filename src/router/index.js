@@ -4,6 +4,8 @@ import Home from "../views/Home.vue";
 import Entradas from "../views/Entradas.vue";
 import Saidas from "../views/Saidas.vue";
 import Categoria from "../views/Categoria.vue";
+import Contas from "../views/Contas.vue";
+import Cartoes from "../views/Cartoes.vue";
 
 Vue.use(VueRouter);
 
@@ -27,6 +29,16 @@ const routes = [
     path: "/categorias",
     name: "Categoria",
     component: Categoria
+  },
+  {
+    path: "/contas",
+    name: "Contas",
+    component: Contas
+  },
+  {
+    path: "/cartoes",
+    name: "Cartoes",
+    component: Cartoes
   }
 ];
 
