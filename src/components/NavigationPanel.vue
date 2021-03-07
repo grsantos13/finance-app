@@ -1,31 +1,24 @@
 <template>
   <v-app>
     <v-app-bar color="purple darken-4" app clipped-left clipped-right dark>
-      <v-menu
-        bottom
-        tile
-        left
-        >
-          <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                dark
-                icon
-                v-bind="attrs"
-                v-on="on"
-              >
-                <v-icon>mdi-dots-vertical</v-icon>
-              </v-btn>
-            </template>
-            <v-list dense>
-              <v-list-item v-for="(item, i) in items" :key="i" :to="item.to">
-                <v-list-item-icon
-                  ><v-icon :color="item.iconColor">{{item.icon}}</v-icon></v-list-item-icon
-                >
-                <v-list-item-title>{{item.title}}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-        </v-menu>
-      <v-toolbar-title>{{title}}</v-toolbar-title>
+      <v-menu bottom tile left>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn dark icon v-bind="attrs" v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+        <v-list dense>
+          <v-list-item v-for="(item, i) in items" :key="i" :to="item.to">
+            <v-list-item-icon
+              ><v-icon :color="item.iconColor">{{
+                item.icon
+              }}</v-icon></v-list-item-icon
+            >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <v-toolbar-title>{{ title }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-row>
         <v-col cols="4" class="ml-auto mt-3">
@@ -60,17 +53,42 @@ export default {
     searchInput: true,
     query: null,
     items: [
-      {title: "HOME", icon: "mdi-home", iconColor: "white", to: "/"},
-      {title: "ENTRADAS", icon: "mdi-cash-plus", iconColor: "success", to: "/entradas"},
-      {title: "DESPESAS", icon: "mdi-cash-minus", iconColor: "error", to: "/despesas"},
-      {title: "CATEGORIAS", icon: "mdi-shape", iconColor: "white", to: "/categorias"},
-      {title: "CONTAS BANCÁRIAS", icon: "mdi-bank", iconColor: "white", to: "/contas"},
-      {title: "CARTÕES", icon: "mdi-credit-card-settings-outline", iconColor: "white", to: "/cartoes"}
+      { title: "HOME", icon: "mdi-home", iconColor: "white", to: "/" },
+      {
+        title: "ENTRADAS",
+        icon: "mdi-cash-plus",
+        iconColor: "success",
+        to: "/entradas"
+      },
+      {
+        title: "DESPESAS",
+        icon: "mdi-cash-minus",
+        iconColor: "error",
+        to: "/despesas"
+      },
+      {
+        title: "CATEGORIAS",
+        icon: "mdi-shape",
+        iconColor: "white",
+        to: "/categorias"
+      },
+      {
+        title: "CONTAS BANCÁRIAS",
+        icon: "mdi-bank",
+        iconColor: "white",
+        to: "/contas"
+      },
+      {
+        title: "CARTÕES",
+        icon: "mdi-credit-card-settings-outline",
+        iconColor: "white",
+        to: "/cartoes"
+      }
     ]
   }),
   methods: {
     filter: function(query) {
-      this.$emit('filter', query)
+      this.$emit("filter", query);
     }
   }
 };

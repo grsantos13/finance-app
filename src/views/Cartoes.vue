@@ -51,7 +51,7 @@
   </navigation-panel>
 </template>
 <script>
-import NavigationPanel from '../components/NavigationPanel.vue';
+import NavigationPanel from "../components/NavigationPanel.vue";
 import DateUtils from "../utils/dateUtils";
 import TranslationUtils from "../utils/translationUtils";
 

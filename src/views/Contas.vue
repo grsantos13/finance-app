@@ -75,7 +75,7 @@
               <v-container>
                 <v-row>
                   <v-col cols="12">
-                    <v-text-field 
+                    <v-text-field
                       v-model="conta.nome"
                       name="nome"
                       id="nome"
@@ -87,8 +87,10 @@
               </v-container>
             </v-card-text>
             <v-card-actions>
-              <v-spacer/>
-              <v-btn color="blue lighten-1" text @click="dialog = false">Fechar</v-btn>
+              <v-spacer />
+              <v-btn color="blue lighten-1" text @click="dialog = false"
+                >Fechar</v-btn
+              >
               <v-btn color="blue lighten-1" text @click="save()">Salvar</v-btn>
             </v-card-actions>
           </v-card>
@@ -98,7 +100,7 @@
   </div>
 </template>
 <script>
-import NavigationPanel from '../components/NavigationPanel.vue';
+import NavigationPanel from "../components/NavigationPanel.vue";
 export default {
   components: { NavigationPanel },
   name: "Contas",
@@ -122,27 +124,24 @@ export default {
   },
   methods: {
     refresh: function() {
-      this.$http
-        .get("/contas")
-        .then(response => {
-          this.contas = response.data
-          this.showContas = response.data
-        });
+      this.$http.get("/contas").then(response => {
+        this.contas = response.data;
+        this.showContas = response.data;
+      });
     },
     filter: function(query) {
       this.showContas = this.contas.filter(conta => {
         return conta.nome.toLowerCase().includes(query.toLowerCase());
       });
     },
-    save: function(){
-      this.$http.post("/contas", this.conta)
-        .then(() => {
-          this.refresh();
-          this.conta = {
-            nome: null
-          }
-          this.dialog = false;
-        });
+    save: function() {
+      this.$http.post("/contas", this.conta).then(() => {
+        this.refresh();
+        this.conta = {
+          nome: null
+        };
+        this.dialog = false;
+      });
     }
   }
 };

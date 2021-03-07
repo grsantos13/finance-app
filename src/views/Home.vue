@@ -4,7 +4,7 @@
   </navigation-panel>
 </template>
 <script>
-import NavigationPanel from '../components/NavigationPanel.vue';
+import NavigationPanel from "../components/NavigationPanel.vue";
 export default {
   components: { NavigationPanel },
   name: "Home"
