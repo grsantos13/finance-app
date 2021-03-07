@@ -1,59 +1,54 @@
 <template>
-  <div class="mr-5">
-    <v-card outlined elevation="2" height="83vh" tile>
-      <toolbar-card
-        color="primary"
-        dark
-        label="Despesas"
-        :searchInput="true"
-        @filter="filter"
-      />
-      <v-card-text>
-        <v-data-table
-          dense
-          :headers="headers"
-          :items="saidas"
-          :page.sync="page"
-          :items-per-page="itemsPerPage"
-          hide-default-footer
-          @page-count="pageCount = $event"
-        >
-          <template v-slot:item.actions="{ item }">
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  :disabled="item.status == 'REALIZADO'"
-                  @click="filter(item)"
-                  v-bind="attrs"
-                  v-on="on"
-                  icon
-                  color="green"
-                >
-                  <v-icon small>
-                    mdi-check
-                  </v-icon>
-                </v-btn>
-              </template>
-              <span>Ativar / Desativar</span>
-            </v-tooltip>
-          </template>
-        </v-data-table>
-        <div class="text-center pt-2">
-          <v-pagination v-model="page" :length="pageCount" />
-        </div>
-      </v-card-text>
-    </v-card>
-  </div>
+  <navigation-panel title="DESPESAS" :search="true" @filter="filter">
+    <div class="mr-5">
+      <v-card outlined elevation="2" height="83vh" tile>
+        <v-card-text>
+          <v-data-table
+            dense
+            :headers="headers"
+            :items="saidas"
+            :page.sync="page"
+            :items-per-page="itemsPerPage"
+            hide-default-footer
+            @page-count="pageCount = $event"
+          >
+            <template v-slot:item.actions="{ item }">
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    :disabled="item.status == 'REALIZADO'"
+                    @click="filter(item)"
+                    v-bind="attrs"
+                    v-on="on"
+                    icon
+                    color="green"
+                  >
+                    <v-icon small>
+                      mdi-check
+                    </v-icon>
+                  </v-btn>
+                </template>
+                <span>Ativar / Desativar</span>
+              </v-tooltip>
+            </template>
+          </v-data-table>
+          <div class="text-center pt-2">
+            <v-pagination v-model="page" :length="pageCount" />
+          </div>
+        </v-card-text>
+      </v-card>
+    </div>
+  </navigation-panel>
 </template>
 <script>
-import ToolbarCard from "../components/ToolbarCard.vue";
+import NavigationPanel from '../components/NavigationPanel.vue';
 import DateUtils from "../utils/dateUtils";
 import TranslationUtils from "../utils/translationUtils";
 
 export default {
   name: "Saidas",
   components: {
-    ToolbarCard
+    NavigationPanel
   },
   data: () => ({
     date: new DateUtils(),

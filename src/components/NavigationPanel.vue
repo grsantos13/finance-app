@@ -1,71 +1,46 @@
 <template>
   <v-app>
-    <v-app-bar color="primary" app clipped-left clipped-right dark>
-      <v-toolbar-title>FINANÇAS</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn @click="drawer = !drawer" title="Notificações" icon>
-        <v-badge
-          v-if="notifications > 0"
-          color="secondary"
-          :content="notifications"
-          overlap
+    <v-app-bar color="purple darken-4" app clipped-left clipped-right dark>
+      <v-menu
+        bottom
+        tile
+        left
         >
-          <v-icon>mdi-bell</v-icon>
-        </v-badge>
-        <v-icon v-else>mdi-bell-outline</v-icon>
-      </v-btn>
+          <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                dark
+                icon
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon>mdi-dots-vertical</v-icon>
+              </v-btn>
+            </template>
+            <v-list dense>
+              <v-list-item v-for="(item, i) in items" :key="i" :to="item.to">
+                <v-list-item-icon
+                  ><v-icon :color="item.iconColor">{{item.icon}}</v-icon></v-list-item-icon
+                >
+                <v-list-item-title>{{item.title}}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+        </v-menu>
+      <v-toolbar-title>{{title}}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-row>
+        <v-col cols="4" class="ml-auto mt-3">
+          <v-text-field
+            v-if="search"
+            v-model="query"
+            type="text"
+            name="query"
+            id="query"
+            label="Buscar"
+            @keypress.enter="filter(query)"
+          />
+        </v-col>
+      </v-row>
     </v-app-bar>
-
-    <v-navigation-drawer app clipped permanent bottom>
-      <v-list nav dense>
-        <v-list-item to="/">
-          <v-list-item-icon
-            ><v-icon color="secondary">mdi-home</v-icon></v-list-item-icon
-          >
-          <v-list-item-title>Home</v-list-item-title>
-        </v-list-item>
-        <v-list-item to="/entradas">
-          <v-list-item-icon
-            ><v-icon color="success">mdi-cash-plus</v-icon></v-list-item-icon
-          >
-          <v-list-item-title>Entradas</v-list-item-title>
-        </v-list-item>
-        <v-list-item to="/despesas">
-          <v-list-item-icon
-            ><v-icon color="error">mdi-cash-minus</v-icon></v-list-item-icon
-          >
-          <v-list-item-title>Despesas</v-list-item-title>
-        </v-list-item>
-        <v-list-item to="/categorias">
-          <v-list-item-icon
-            ><v-icon color="secondary">mdi-shape</v-icon></v-list-item-icon
-          >
-          <v-list-item-title>Categorias</v-list-item-title>
-        </v-list-item>
-        <v-list-item to="/contas">
-          <v-list-item-icon
-            ><v-icon color="secondary">mdi-view-list</v-icon></v-list-item-icon
-          >
-          <v-list-item-title>Contas</v-list-item-title>
-        </v-list-item>
-        <v-list-item to="/cartoes">
-          <v-list-item-icon
-            ><v-icon color="secondary"
-              >mdi-credit-card-multiple-outline</v-icon
-            ></v-list-item-icon
-          >
-          <v-list-item-title>Cartões</v-list-item-title>
-        </v-list-item>
-      </v-list>
-      <v-app-bar color="transparent" bottom absolute>
-        <v-list nav dense>
-          <v-list-item>
-            <v-list-item-icon><v-icon>mdi-power</v-icon></v-list-item-icon>
-            <v-list-item-title>Sair</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-app-bar>
-    </v-navigation-drawer>
     <v-card-text style="min-height: 0;">
       <v-main>
         <slot />
@@ -76,9 +51,28 @@
 <script>
 export default {
   name: "NavigationPanel",
+  props: {
+    title: String,
+    search: Boolean
+  },
   data: () => ({
-    notifications: []
-  })
+    notifications: [],
+    searchInput: true,
+    query: null,
+    items: [
+      {title: "HOME", icon: "mdi-home", iconColor: "white", to: "/"},
+      {title: "ENTRADAS", icon: "mdi-cash-plus", iconColor: "success", to: "/entradas"},
+      {title: "DESPESAS", icon: "mdi-cash-minus", iconColor: "error", to: "/despesas"},
+      {title: "CATEGORIAS", icon: "mdi-shape", iconColor: "white", to: "/categorias"},
+      {title: "CONTAS BANCÁRIAS", icon: "mdi-bank", iconColor: "white", to: "/contas"},
+      {title: "CARTÕES", icon: "mdi-credit-card-settings-outline", iconColor: "white", to: "/cartoes"}
+    ]
+  }),
+  methods: {
+    filter: function(query) {
+      this.$emit('filter', query)
+    }
+  }
 };
 </script>
 <style scoped>
