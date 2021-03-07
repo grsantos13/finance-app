@@ -81,6 +81,7 @@
                       id="nome"
                       type="text"
                       label="Nome"
+                      autofocus
                     />
                   </v-col>
                 </v-row>

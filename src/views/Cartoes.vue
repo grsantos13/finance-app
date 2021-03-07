@@ -79,6 +79,7 @@
                   <v-text-field
                     v-model="cartao.nome"
                     name="nome"
+                    autofocus
                     id="nome"
                     type="text"
                     label="Nome"
@@ -93,7 +94,7 @@
                     max="31"
                   />
                   <v-text-field
-                    v-model="cartao.diaVencimento"
+                    v-model="cartao.diaFechamento"
                     name="diaFechamento"
                     id="diaFechamento"
                     type="number"
@@ -142,8 +143,8 @@ export default {
         value: "mesVencimentoMesmoFechamento",
         align: "center"
       },
-      { text: "Vencimento", value: "diaVencimento", align: "center" },
-      { text: "Fechamento", value: "diaFechamento", align: "center" },
+      { text: "Dia vencimento", value: "diaVencimento", align: "center" },
+      { text: "Dia fechamento", value: "diaFechamento", align: "center" },
       { text: "Ações", value: "actions", sortable: false, align: "center" }
     ],
     cartoes: [],
@@ -193,6 +194,7 @@ export default {
           diaFechamento: null,
           mesVencimentoMesmoFechamento: false
         };
+        this.dialog = false;
       });
     }
   }
