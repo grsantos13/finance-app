@@ -1,6 +1,6 @@
 <template>
   <div class="mr-5">
-    <navigation-panel title="CONTA BANCÁRIA" :search="true">
+    <navigation-panel title="CONTA BANCÁRIA" :search="true" @filter="filter">
       <v-card
         outlined
         elevation="2"
@@ -45,10 +45,54 @@
               </div>
             </v-col>
           </v-row>
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                @click="dialog = true"
+                color="blue"
+                dark
+                fixed
+                bottom
+                right
+                fab
+              >
+                <v-icon>mdi-plus</v-icon>
+              </v-btn>
+            </template>
+            <span>Adicionar conta</span>
+          </v-tooltip>
         </v-card-text>
       </v-card>
       <v-row justify="center">
-        <v-dialog v-model="dialog" persistent max-width="300px"> </v-dialog>
+        <v-dialog v-model="dialog" max-width="300px">
+          <v-card>
+            <v-card-title>
+              <span class="headline">Cadastrar Contas</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12">
+                    <v-text-field 
+                      v-model="conta.nome"
+                      name="nome"
+                      id="nome"
+                      type="text"
+                      label="Nome"
+                    />
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer/>
+              <v-btn color="blue lighten-1" text @click="dialog = false">Fechar</v-btn>
+              <v-btn color="blue lighten-1" text @click="save()">Salvar</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-row>
     </navigation-panel>
   </div>
@@ -68,7 +112,10 @@ export default {
     page: 1,
     pageCount: 0,
     itemsPerPage: 8,
-    dialog: false
+    dialog: false,
+    conta: {
+      nome: null
+    }
   }),
   mounted: function() {
     this.refresh();
@@ -78,19 +125,24 @@ export default {
       this.$http
         .get("/contas")
         .then(response => {
-          this.contas = response.data.map(conta => {
-            conta.nome = conta.nome.replace("_", " ");
-            return conta;
-          });
-        })
-        .then(() => {
-          this.showContas = this.contas;
+          this.contas = response.data
+          this.showContas = response.data
         });
     },
     filter: function(query) {
       this.showContas = this.contas.filter(conta => {
         return conta.nome.toLowerCase().includes(query.toLowerCase());
       });
+    },
+    save: function(){
+      this.$http.post("/contas", this.conta)
+        .then(() => {
+          this.refresh();
+          this.conta = {
+            nome: null
+          }
+          this.dialog = false;
+        });
     }
   }
 };
