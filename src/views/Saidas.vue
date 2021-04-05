@@ -38,17 +38,44 @@
         </v-card-text>
       </v-card>
     </div>
+    <registro-movimento-dialog
+      title="Despesa"
+      type="DESPESA"
+      endpoint="despesas"
+      :dialog.sync="dialog"
+      @refresh="refresh"
+    />
+    <v-tooltip top>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          v-bind="attrs"
+          v-on="on"
+          @click="dialog = true"
+          color="blue"
+          dark
+          fixed
+          bottom
+          right
+          fab
+        >
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+      </template>
+      <span>Adicionar despesa</span>
+    </v-tooltip>
   </navigation-panel>
 </template>
 <script>
 import NavigationPanel from "../components/NavigationPanel.vue";
+import RegistroMovimentoDialog from "../components/RegistroMovimentoDialog.vue";
 import DateUtils from "../utils/dateUtils";
 import TranslationUtils from "../utils/translationUtils";
 
 export default {
   name: "Saidas",
   components: {
-    NavigationPanel
+    NavigationPanel,
+    RegistroMovimentoDialog
   },
   data: () => ({
     date: new DateUtils(),
@@ -65,7 +92,8 @@ export default {
     saidas: [],
     page: 1,
     pageCount: 0,
-    itemsPerPage: 10
+    itemsPerPage: 10,
+    dialog: false
   }),
   mounted: function() {
     this.refresh();
@@ -77,7 +105,7 @@ export default {
           this.saidas = response.data.content.map(despesa => {
             despesa.fixa = this.translation.translate(despesa.fixa, "bool");
             if (despesa.conta != undefined) {
-              despesa.conta.nome = despesa.conta.nome.replace("_", " ");
+              despesa.conta = despesa.conta.replace("_", " ");
             } else {
               despesa.conta = { nome: "N/A" };
             }

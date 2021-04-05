@@ -38,99 +38,13 @@
         </v-card-text>
       </v-card>
     </div>
-    <v-row justify="center">
-      <v-dialog v-model="dialog" max-width="500px">
-        <v-card>
-          <v-card-title>
-            <span class="headline">Cadastrar Entrada</span>
-          </v-card-title>
-          <v-card-text>
-            <v-row>
-              <v-col cols="6">
-                <v-select
-                  :items="categorias"
-                  label="Categoria"
-                  item-text="nome"
-                  item-value="id"
-                  v-model="entradaRequest.idCategoria"
-                />
-                <v-checkbox
-                  v-model="entradaRequest.fixa"
-                  label="Entrada fixa"
-                />
-                <v-select
-                  :items="contas"
-                  label="Conta"
-                  item-text="nome"
-                  item-value="id"
-                  v-model="entradaRequest.idConta"
-                />
-              </v-col>
-              <v-col cols="6">
-                <v-select
-                  :items="formasDePagamento"
-                  label="Pagamento"
-                  v-model="entradaRequest.formaDePagamento"
-                />
-                <v-checkbox
-                  :disabled="!entradaRequest.fixa"
-                  v-model="entradaRequest.valorVariavel"
-                  label="Valor variável"
-                />
-                <v-select
-                  :items="status"
-                  label="Status"
-                  v-model="entradaRequest.status"
-                />
-              </v-col>
-              <v-col cols="12" style="margin-top: -30px">
-                <v-text-field v-model="entradaRequest.valor" label="Valor" />
-              </v-col>
-              <v-col cols="12" style="margin-top: -30px">
-                <v-textarea
-                  v-model="entradaRequest.descricao"
-                  label="Descrição"
-                  rows="3"
-                />
-              </v-col>
-            </v-row>
-            <v-col cols="12" style="margin-top: -30px">
-              <v-menu
-                v-model="menu"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="auto"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="entradaRequest.data"
-                    label="Data de entrada"
-                    prepend-icon="mdi-calendar"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                  />
-                </template>
-                <v-date-picker
-                  v-model="entradaRequest.realizadaEm"
-                  @input="menu = false"
-                  locale="pt-BR"
-                />
-              </v-menu>
-            </v-col>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer />
-            <v-btn color="blue lighten-1" text @click="dialog = false"
-              >Fechar</v-btn
-            >
-            <v-btn color="blue lighten-1" text @click="save()">Salvar</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-row>
+    <registro-movimento-dialog
+      title="Entrada"
+      type="ENTRADA"
+      endpoint="entradas"
+      :dialog.sync="dialog"
+      @refresh="refresh"
+    />
     <v-tooltip top>
       <template v-slot:activator="{ on, attrs }">
         <v-btn
@@ -153,19 +67,20 @@
 </template>
 <script>
 import NavigationPanel from "../components/NavigationPanel.vue";
+import RegistroMovimentoDialog from "../components/RegistroMovimentoDialog.vue";
 import DateUtils from "../utils/dateUtils";
 import TranslationUtils from "../utils/translationUtils";
 
 export default {
   name: "Entradas",
   components: {
-    NavigationPanel
+    NavigationPanel,
+    RegistroMovimentoDialog
   },
   data: () => ({
     date: new DateUtils(),
     translation: new TranslationUtils(),
     dialog: false,
-    menu: false,
     headers: [
       { text: "Categoria", value: "categoria.nome" },
       { text: "Descrição", value: "descricao" },
@@ -179,28 +94,10 @@ export default {
     entradas: [],
     page: 1,
     pageCount: 0,
-    itemsPerPage: 10,
-    categorias: [],
-    formasDePagamento: ["CREDITO", "DEBITO", "PIX", "DINHEIRO"],
-    status: ["PLANEJADO", "PENDENTE", "REALIZADO"],
-    contas: [],
-    entradaRequest: {
-      idCategoria: null,
-      formaDePagamento: null,
-      fixa: false,
-      valorVariavel: false,
-      conta: null,
-      status: "PLANEJADO",
-      descricao: null,
-      valor: null,
-      realizadaEm: null,
-      data: null
-    }
+    itemsPerPage: 10
   }),
   mounted: function() {
     this.refresh();
-    this.getCategorias();
-    this.getContas();
   },
   methods: {
     refresh: function() {
@@ -222,52 +119,8 @@ export default {
         }
       });
     },
-    save: function() {
-      this.$http
-        .post("/entradas", this.entradaRequest)
-        .then(() => {
-          this.entradaRequest = {
-            idCategoria: null,
-            formaDePagamento: null,
-            fixa: false,
-            valorVariavel: false,
-            idConta: null,
-            status: "PLANEJADO",
-            descricao: null,
-            valor: null,
-            realizadaEm: null,
-            data: null
-          };
-          this.$toastr.s("Entrada registrada com sucesso!");
-          this.refresh();
-        })
-        .catch(error => {
-          error.response.data._embedded.errors.map(error => {
-            var message = error.message.split(": ")[1];
-            var field = error.message.split(": ")[0].split(".")[1];
-            this.$toastr.e(message, field);
-          });
-        });
-    },
     filter: function(query) {
       alert(query);
-    },
-    getCategorias: function() {
-      this.$http.get("/categorias?movimentos=ENTRADA").then(response => {
-        this.categorias = response.data.filter(c => {
-          return c.movimento.includes("ENTRADA");
-        });
-      });
-    },
-    getContas: function() {
-      this.$http.get("/contas").then(response => {
-        this.contas = response.data;
-      });
-    }
-  },
-  watch: {
-    "entradaRequest.realizadaEm"(val) {
-      this.entradaRequest.data = this.date.convertDate(val);
     }
   }
 };
