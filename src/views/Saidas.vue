@@ -118,6 +118,9 @@ export default {
                 despesa.conta = { nome: "N/A" };
               }
               despesa.realizadaEm = this.date.convertDate(despesa.realizadaEm);
+              despesa.vencimento = this.date.convertDate(
+                despesa.transacoes[despesa.transacoes.length - 1].vencimento
+              );
               despesa.valorVariavel = this.translation.translate(
                 despesa.valorVariavel,
                 "bool"
