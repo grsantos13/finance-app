@@ -87,6 +87,7 @@ export default {
       { text: "Pagamento", value: "formaDePagamento" },
       { text: "Valor", value: "valor" },
       { text: "Data", value: "realizadaEm" },
+      { text: "Vencimento", value: "vencimento" },
       { text: "Status", value: "status" },
       { text: "Ações", value: "actions", sortable: false }
     ],
