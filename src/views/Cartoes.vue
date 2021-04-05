@@ -70,7 +70,7 @@
       <v-dialog v-model="dialog" max-width="400px">
         <v-card>
           <v-card-title>
-            <span class="headline">Cadastrar Contas</span>
+            <span class="headline">Cadastrar Cartões</span>
           </v-card-title>
           <v-card-text>
             <v-container>
