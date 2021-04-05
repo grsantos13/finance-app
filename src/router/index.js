@@ -6,6 +6,7 @@ import Saidas from "../views/Saidas.vue";
 import Categoria from "../views/Categoria.vue";
 import Contas from "../views/Contas.vue";
 import Cartoes from "../views/Cartoes.vue";
+import MovimentacaoMensal from "../views/MovimentacaoMensal.vue";
 
 Vue.use(VueRouter);
 
@@ -39,6 +40,11 @@ const routes = [
     path: "/cartoes",
     name: "Cartoes",
     component: Cartoes
+  },
+  {
+    path: "/movimentacao",
+    name: "MovimentacaoMensal",
+    component: MovimentacaoMensal
   }
 ];
 

@@ -83,6 +83,12 @@ export default {
         icon: "mdi-credit-card-settings-outline",
         iconColor: "white",
         to: "/cartoes"
+      },
+      {
+        title: "MOVIMENTAÇÃO MENSAL",
+        icon: "mdi-folder-plus",
+        iconColor: "white",
+        to: "/movimentacao"
       }
     ]
   }),
