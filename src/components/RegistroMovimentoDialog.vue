@@ -128,7 +128,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="blue lighten-1" text @click="dialog = false"
+          <v-btn color="blue lighten-1" text @click="$emit('close')"
             >Fechar</v-btn
           >
           <v-btn color="blue lighten-1" text @click="save()">Salvar</v-btn>
@@ -216,7 +216,7 @@ export default {
           };
           this.$toastr.s(`${this.title} registrada com sucesso!`);
           this.$emit("refresh");
-          this.dialog = false;
+          this.$emit("close");
         })
         .catch(error => {
           error.response.data._embedded.errors.map(error => {

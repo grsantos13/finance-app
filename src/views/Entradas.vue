@@ -10,7 +10,6 @@
             :page.sync="page"
             :items-per-page="itemsPerPage"
             hide-default-footer
-            @page-count="pageCount = $event"
           >
             <template v-slot:item.actions="{ item }">
               <v-tooltip bottom>
@@ -42,8 +41,9 @@
       title="Entrada"
       type="ENTRADA"
       endpoint="entradas"
-      :dialog.sync="dialog"
+      :dialog="dialog"
       @refresh="refresh"
+      @close="dialog = false"
     />
     <v-tooltip top>
       <template v-slot:activator="{ on, attrs }">
@@ -100,27 +100,39 @@ export default {
     this.refresh();
   },
   methods: {
-    refresh: function() {
-      this.$http.get("/entradas?orderBy=realizadaEm,DESC").then(response => {
-        if (!response.data.empty) {
-          this.entradas = response.data.content.map(entrada => {
-            entrada.fixa = this.translation.translate(entrada.fixa, "bool");
-            entrada.conta.nome = entrada.conta.nome.replace("_", " ");
-            entrada.realizadaEm = this.date.convertDate(entrada.realizadaEm);
-            entrada.valorVariavel = this.translation.translate(
-              entrada.valorVariavel,
-              "bool"
-            );
-            entrada.valor = this.$curr.format(entrada.valor, {
-              locale: "pt-BR"
+    refresh: function(val) {
+      this.$http
+        .get(
+          `/entradas?orderBy=realizadaEm,DESC&size=${this.itemsPerPage}&page=${
+            val ? val - 1 : this.page - 1
+          }`
+        )
+        .then(response => {
+          if (!response.data.empty) {
+            this.entradas = response.data.content.map(entrada => {
+              entrada.fixa = this.translation.translate(entrada.fixa, "bool");
+              entrada.conta.nome = entrada.conta.nome.replace("_", " ");
+              entrada.realizadaEm = this.date.convertDate(entrada.realizadaEm);
+              entrada.valorVariavel = this.translation.translate(
+                entrada.valorVariavel,
+                "bool"
+              );
+              entrada.valor = this.$curr.format(entrada.valor, {
+                locale: "pt-BR"
+              });
+              return entrada;
             });
-            return entrada;
-          });
-        }
-      });
+          }
+          this.pageCount = response.data.totalPages;
+        });
     },
     filter: function(query) {
       alert(query);
+    }
+  },
+  watch: {
+    page(val) {
+      this.refresh(val);
     }
   }
 };

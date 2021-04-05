@@ -42,8 +42,9 @@
       title="Despesa"
       type="DESPESA"
       endpoint="despesas"
-      :dialog.sync="dialog"
+      :dialog="dialog"
       @refresh="refresh"
+      @close="dialog = false"
     />
     <v-tooltip top>
       <template v-slot:activator="{ on, attrs }">
@@ -99,48 +100,65 @@ export default {
     this.refresh();
   },
   methods: {
-    refresh: function() {
-      this.$http.get("/despesas?orderBy=realizadaEm,DESC").then(response => {
-        if (!response.data.empty) {
-          this.saidas = response.data.content.map(despesa => {
-            despesa.fixa = this.translation.translate(despesa.fixa, "bool");
-            if (despesa.conta != undefined) {
-              despesa.conta = despesa.conta.replace("_", " ");
-            } else {
-              despesa.conta = { nome: "N/A" };
-            }
-            despesa.realizadaEm = this.date.convertDate(despesa.realizadaEm);
-            despesa.valorVariavel = this.translation.translate(
-              despesa.valorVariavel,
-              "bool"
-            );
+    refresh: function(val) {
+      this.$http
+        .get(
+          `/despesas?orderBy=realizadaEm,DESC&size=${this.itemsPerPage}&page=${
+            val ? val - 1 : this.page - 1
+          }`
+        )
+        .then(response => {
+          if (!response.data.empty) {
+            this.saidas = response.data.content.map(despesa => {
+              despesa.fixa = this.translation.translate(despesa.fixa, "bool");
+              if (despesa.conta != undefined) {
+                despesa.conta = despesa.conta.replace("_", " ");
+              } else {
+                despesa.conta = { nome: "N/A" };
+              }
+              despesa.realizadaEm = this.date.convertDate(despesa.realizadaEm);
+              despesa.valorVariavel = this.translation.translate(
+                despesa.valorVariavel,
+                "bool"
+              );
 
-            despesa.valor = this.$curr.format(despesa.valor, {
-              locale: "pt-BR"
+              despesa.valor = this.$curr.format(despesa.valor, {
+                locale: "pt-BR"
+              });
+
+              var filtroStatusRealizado = despesa.transacoes.filter(
+                transacao => {
+                  return transacao.status != "REALIZADO";
+                }
+              );
+
+              var filtroStatusPendente = despesa.transacoes.filter(
+                transacao => {
+                  return transacao.status == "PENDENTE";
+                }
+              );
+
+              if (filtroStatusRealizado.length > 0) {
+                if (filtroStatusPendente.length > 0)
+                  despesa.status = "PENDENTE";
+                else despesa.status = "PLANEJADO";
+              } else {
+                despesa.status = "REALIZADO";
+              }
+
+              return despesa;
             });
-
-            var filtroStatusRealizado = despesa.transacoes.filter(transacao => {
-              return transacao.status != "REALIZADO";
-            });
-
-            var filtroStatusPendente = despesa.transacoes.filter(transacao => {
-              return transacao.status == "PENDENTE";
-            });
-
-            if (filtroStatusRealizado.length > 0) {
-              if (filtroStatusPendente.length > 0) despesa.status = "PENDENTE";
-              else despesa.status = "PLANEJADO";
-            } else {
-              despesa.status = "REALIZADO";
-            }
-
-            return despesa;
-          });
-        }
-      });
+          }
+          this.pageCount = response.data.totalPages;
+        });
     },
     filter: function(query) {
       alert(query);
+    }
+  },
+  watch: {
+    page(val) {
+      this.refresh(val);
     }
   }
 };
