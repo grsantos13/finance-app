@@ -85,10 +85,7 @@
                     type="text"
                     label="Nome"
                   />
-                  <v-checkbox
-                    v-model="categoria.umaPorMes"
-                    label="1x por mês"
-                  />
+                  <v-checkbox v-model="categoria.umaPorMes" label="Mensal" />
                   <v-radio-group v-model="categoria.movimento" row>
                     <v-radio
                       v-for="movimento in movimentos"
@@ -129,8 +126,8 @@ export default {
     translation: new TranslationUtils(),
     headers: [
       { text: "Categoria", value: "nome", align: "center" },
-      { text: "1x por mês", value: "umaPorMes", align: "center" },
-      { text: "Movimento", value: "movimento", align: "center" },
+      { text: "Mensal", value: "umaPorMes", align: "center" },
+      { text: "Tipo", value: "movimento", align: "center" },
       { text: "Ações", value: "actions", sortable: false, align: "center" }
     ],
     dialog: false,
@@ -152,7 +149,7 @@ export default {
   methods: {
     refresh: function() {
       this.$http
-        .get("/categorias")
+        .get("/categorias?movimentos=ENTRADA,DESPESA")
         .then(response => {
           this.categorias = response.data.map(categoria => {
             categoria.umaPorMes = this.translation.translate(
