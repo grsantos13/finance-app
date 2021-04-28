@@ -56,7 +56,7 @@
                   {{ despesa.categoria.nome }}:
                 </div>
                 <v-text-field
-                  :disabled="!despesa.valorVariavel"
+                  :disabled="despesa.valorVariavel == 'NÃO'"
                   v-model="despesa.valor"
                 />
               </div>
